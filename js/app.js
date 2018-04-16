@@ -3,7 +3,10 @@
 var image1 = document.getElementById('productOne');
 var image2 = document.getElementById('productTwo');
 var image3 = document.getElementById('productThree');
-var testButton = document.getElementById('testbutton');
+var button1 = document.getElementById('buttonOne');
+var button2 = document.getElementById('buttonTwo');
+var button3 = document.getElementById('buttonThree');
+var results = document.getElementById('results');
 
 function Product(productName,img) {
   this.productName = productName,
@@ -36,6 +39,7 @@ var allProducts = [
 ];
 
 var productsOnScreen = [];
+var voteCount = 0;
 
 function randInt(max) {
   return Math.round(Math.random()*max);
@@ -54,6 +58,57 @@ function showNewProducts() {
   image3.src = productsOnScreen[2].img;
 }
 
-testButton.addEventListener('click', showNewProducts);
+function checkVoteOver(voteCount){
+  if (voteCount === 25) {
+    button1.style.visibility='hidden';
+    button2.style.visibility='hidden';
+    button3.style.visibility='hidden';
+    return true;
+  }
+}
+
+var listItem;
+var percent;
+
+function getResults(productArray){
+  for (var i of productArray){
+    if (i.timesOnPage > 0){
+      percent = Math.floor(i.votes/i.timesOnPage*100);
+    } else {
+      percent = 0;
+    }
+    listItem = document.createElement('li');
+    listItem.textContent = i.productName+': '+i.votes+' votes, '+percent+'% pick rate';
+    results.appendChild(listItem);
+  }
+}
+
+function displayResults() {
+  getResults(productsOnScreen);
+  getResults(allProducts);
+}
+
+function buttonEvent(i){
+  voteCount++;
+  productsOnScreen[i].votes++;
+  if (checkVoteOver(voteCount)){
+    displayResults();
+    return;
+  }
+  showNewProducts();
+}
+
+button1.addEventListener('click', function(){
+  buttonEvent(0);
+});
+
+button2.addEventListener('click', function(){
+  buttonEvent(1);
+});
+
+button3.addEventListener('click', function(){
+  buttonEvent(2);
+});
 
 showNewProducts();
+
