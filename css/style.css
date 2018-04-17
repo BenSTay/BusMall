@@ -18,13 +18,25 @@ main {
   width: 960px;
   margin: 0 auto;
   font-size: 0;
+  font-weight: bold;
+}
+
+div {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 300px;
+  line-height: 300px;
+  font-family: 'Poiret One', cursive;
+  color: white;
 }
 
 img {
   object-fit: cover;
   width: 298px;
   height: 298px;
-  margin: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   border-width: 1px;
   border-color: black;
   border-style: solid;
@@ -34,39 +46,7 @@ img:hover {
   filter: brightness(0.8);
 }
 
-ul {
-  padding-top: 10px;
-  float: left;
+canvas {
   margin: 10px;
-  width: 220px;
-  height: 760px;
-  background-color: #EEE;
-  text-align: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 14px;
-}
-
-ul li:nth-child(even) {
-  margin-bottom:10px;
-}
-
-ul li:nth-child(odd) {
-  font-weight: bold;
-}
-
-button {
-  width:220px;
-  margin: 10px;
-}
-
-p {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 20px;
-  float: left;
-  margin: 10px;
-  width: 680px;
-  height: 750px;
-  line-height: 200%;
-  padding: 10px;
   background-color: #EEE;
 }
