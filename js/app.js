@@ -3,9 +3,6 @@
 var image1 = document.getElementById('productOne');
 var image2 = document.getElementById('productTwo');
 var image3 = document.getElementById('productThree');
-var button1 = document.getElementById('buttonOne');
-var button2 = document.getElementById('buttonTwo');
-var button3 = document.getElementById('buttonThree');
 var results = document.getElementById('results');
 
 function Product(productName,img) {
@@ -60,18 +57,18 @@ function showNewProducts() {
 
 function checkVoteOver(voteCount){
   if (voteCount === 25) {
-    button1.style.visibility='hidden';
-    button2.style.visibility='hidden';
-    button3.style.visibility='hidden';
+    image1.parentElement.removeChild(image1);
+    image2.parentElement.removeChild(image2);
+    image3.parentElement.removeChild(image3);
     return true;
   }
 }
 
 var listItem;
 var percent;
-
-function getResults(productArray){
-  for (var i of productArray){
+function displayResults() {
+  allProducts = allProducts.concat(productsOnScreen);
+  for (var i of allProducts){
     if (i.timesOnPage > 0){
       percent = Math.floor(i.votes/i.timesOnPage*100);
     } else {
@@ -86,11 +83,6 @@ function getResults(productArray){
   }
 }
 
-function displayResults() {
-  getResults(productsOnScreen);
-  getResults(allProducts);
-}
-
 function buttonEvent(i){
   voteCount++;
   productsOnScreen[i].votes++;
@@ -101,17 +93,16 @@ function buttonEvent(i){
   showNewProducts();
 }
 
-button1.addEventListener('click', function(){
+image1.addEventListener('click', function(){
   buttonEvent(0);
 });
 
-button2.addEventListener('click', function(){
+image2.addEventListener('click', function(){
   buttonEvent(1);
 });
 
-button3.addEventListener('click', function(){
+image3.addEventListener('click', function(){
   buttonEvent(2);
 });
 
 showNewProducts();
-

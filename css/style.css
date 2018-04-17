@@ -22,24 +22,24 @@ main {
 
 img {
   object-fit: cover;
-  max-width: 218px;
-  min-width: 218px;
-  height: 218px;
-  overflow: hidden;
+  width: 298px;
+  height: 298px;
   margin: 10px;
-  display: inline-block;
   border-width: 1px;
   border-color: black;
   border-style: solid;
 }
+
+img:hover {
+  filter: brightness(0.8);
+}
+
 ul {
   padding-top: 10px;
   float: left;
   margin: 10px;
   width: 220px;
-  font-size: 16px;
-  height: 800px;
-  overflow-y: scroll;
+  height: 760px;
   background-color: #EEE;
   text-align: center;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -48,6 +48,10 @@ ul {
 
 ul li:nth-child(even) {
   margin-bottom:10px;
+}
+
+ul li:nth-child(odd) {
+  font-weight: bold;
 }
 
 button {
@@ -61,7 +65,7 @@ p {
   float: left;
   margin: 10px;
   width: 680px;
-  height: 510px;
+  height: 750px;
   line-height: 200%;
   padding: 10px;
   background-color: #EEE;
