@@ -78,7 +78,10 @@ function getResults(productArray){
       percent = 0;
     }
     listItem = document.createElement('li');
-    listItem.textContent = i.productName+': '+i.votes+' votes, '+percent+'% pick rate';
+    listItem.textContent = i.productName;
+    results.appendChild(listItem);
+    listItem = document.createElement('li');
+    listItem.textContent = i.votes+' votes, '+percent+'% pick rate';
     results.appendChild(listItem);
   }
 }
