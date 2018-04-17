@@ -18,51 +18,35 @@ main {
   width: 960px;
   margin: 0 auto;
   font-size: 0;
+  font-weight: bold;
+}
+
+div {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 300px;
+  line-height: 300px;
+  font-family: 'Poiret One', cursive;
+  color: white;
 }
 
 img {
   object-fit: cover;
-  max-width: 218px;
-  min-width: 218px;
-  height: 218px;
-  overflow: hidden;
-  margin: 10px;
-  display: inline-block;
+  width: 298px;
+  height: 298px;
+  margin-left: 10px;
+  margin-right: 10px;
   border-width: 1px;
   border-color: black;
   border-style: solid;
 }
-ul {
-  padding-top: 10px;
-  float: left;
-  margin: 10px;
-  width: 220px;
-  font-size: 16px;
-  height: 800px;
-  overflow-y: scroll;
-  background-color: #EEE;
-  text-align: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 14px;
+
+img:hover {
+  filter: brightness(0.8);
 }
 
-ul li:nth-child(even) {
-  margin-bottom:10px;
-}
-
-button {
-  width:220px;
+canvas {
   margin: 10px;
-}
-
-p {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  font-size: 20px;
-  float: left;
-  margin: 10px;
-  width: 680px;
-  height: 510px;
-  line-height: 200%;
-  padding: 10px;
   background-color: #EEE;
 }

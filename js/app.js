@@ -3,97 +3,148 @@
 var image1 = document.getElementById('productOne');
 var image2 = document.getElementById('productTwo');
 var image3 = document.getElementById('productThree');
-var button1 = document.getElementById('buttonOne');
-var button2 = document.getElementById('buttonTwo');
-var button3 = document.getElementById('buttonThree');
-var results = document.getElementById('results');
+var images = document.getElementById('images');
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext("2d");
+
+function renderInstructions(ctx){
+  ctx.font = "24px Cambria, Cochin, Georgia, Times, 'Times New Roman'"
+  ctx.fillStyle = "#000";
+  ctx.textAlign = "center";
+  ctx.fillText("Instructions:",canvas.width/2,canvas.height/2-48)
+  ctx.fillText("Pictures of three of our products will be displayed randomly on the screen.",canvas.width/2,canvas.height/2-16);
+  ctx.fillText("Click on the picture of your favorite product of the three to vote for it.",canvas.width/2,canvas.height/2+16);
+  ctx.fillText("After you have voted 25 times, the voting results will be shown here.",canvas.width/2,canvas.height/2+48);
+}
+
+
+Product.products = [];
+Product.allNames = [];
+Product.allVotes = [];
+Product.allTimesDisplayed = [];
 
 function Product(productName,img) {
   this.productName = productName,
   this.img = img;
   this.votes = 0;
-  this.timesOnPage = 0;
+  this.timesDisplayed = 0;
+  Product.products.push(this);
 }
 
-var allProducts = [
-  new Product('R2-D2 Bag','img/bag.jpg'),
-  new Product('Banana Slicer','img/banana.jpg'),
-  new Product('iPad TP Dispenser','img/bathroom.jpg'),
-  new Product('Toeless Boots','img/boots.jpg'),
-  new Product('Breakfast Maker','img/breakfast.jpg'),
-  new Product('Meatball Bubblegum','img/bubblegum.jpg'),
-  new Product('Convex Chair','img/chair.jpg'),
-  new Product('Cthulhu Action Figure','img/cthulhu.jpg'),
-  new Product('Duck Beak Dog Muzzle','img/dog-duck.jpg'),
-  new Product('Dragon Meat','img/dragon.jpg'),
-  new Product('Dinnerware Pen Lids','img/pen.jpg'),
-  new Product('Pet Sweep','img/pet-sweep.jpg'),
-  new Product('Pizza Scissors','img/scissors.jpg'),
-  new Product('Shark Sleeping Bag','img/shark.jpg'),
-  new Product('Baby Sweep Onesie','img/sweep.png'),
-  new Product('Tauntaun Sleeping Bag','img/tauntaun.jpg'),
-  new Product('Unicorn Meat','img/unicorn.jpg'),
-  new Product('USB Tentacle','img/usb.gif'),
-  new Product('Reverse Water Can','img/water-can.jpg'),
-  new Product('Wine Glass','img/wine-glass.jpg')
-];
+new Product('R2-D2 Bag','img/bag.jpg'),
+new Product('Banana Slicer','img/banana.jpg'),
+new Product('iPad TP Dispenser','img/bathroom.jpg'),
+new Product('Toeless Boots','img/boots.jpg'),
+new Product('Breakfast Maker','img/breakfast.jpg'),
+new Product('Meatball Bubblegum','img/bubblegum.jpg'),
+new Product('Convex Chair','img/chair.jpg'),
+new Product('Cthulhu Action Figure','img/cthulhu.jpg'),
+new Product('Duck Beak Dog Muzzle','img/dog-duck.jpg'),
+new Product('Dragon Meat','img/dragon.jpg'),
+new Product('Dinnerware Pen Lids','img/pen.jpg'),
+new Product('Pet Sweep','img/pet-sweep.jpg'),
+new Product('Pizza Scissors','img/scissors.jpg'),
+new Product('Shark Sleeping Bag','img/shark.jpg'),
+new Product('Baby Sweep Onesie','img/sweep.png'),
+new Product('Tauntaun Sleeping Bag','img/tauntaun.jpg'),
+new Product('Unicorn Meat','img/unicorn.jpg'),
+new Product('USB Tentacle','img/usb.gif'),
+new Product('Reverse Water Can','img/water-can.jpg'),
+new Product('Wine Glass','img/wine-glass.jpg')
 
-var productsOnScreen = [];
 var voteCount = 0;
+var displayedProducts = [];
 
 function randInt(max) {
-  return Math.round(Math.random()*max);
+  return Math.floor(Math.random()*max);
 }
 
 function showNewProducts() {
   for (var i = 0; i < 3; i++) {
-    productsOnScreen.unshift(allProducts.splice(randInt(allProducts.length-1),1)[0]);
-    productsOnScreen[0].timesOnPage++;
-    if (productsOnScreen.length > 6){
-      allProducts.push(productsOnScreen.pop());
+    displayedProducts.unshift(Product.products.splice(randInt(Product.products.length-1),1)[0]);
+    displayedProducts[0].timesDisplayed++;
+    if (displayedProducts.length > 6){
+      Product.products.push(displayedProducts.pop());
     }
   }
-  image1.src = productsOnScreen[0].img;
-  image2.src = productsOnScreen[1].img;
-  image3.src = productsOnScreen[2].img;
+
+  image1.src = displayedProducts[0].img;
+  image1.alt = displayedProducts[0].productName;
+  image2.src = displayedProducts[1].img;
+  image2.alt = displayedProducts[1].productName;
+  image3.src = displayedProducts[2].img;
+  image3.alt = displayedProducts[2].productName;
 }
 
 function checkVoteOver(voteCount){
   if (voteCount === 25) {
-    button1.style.visibility='hidden';
-    button2.style.visibility='hidden';
-    button3.style.visibility='hidden';
+    images.removeChild(image1);
+    images.removeChild(image2);
+    images.removeChild(image3);
+    images.textContent = 'Thank You!';
+    images.style.fontSize = '120px';
     return true;
   }
 }
 
-var listItem;
-var percent;
-
-function getResults(productArray){
-  for (var i of productArray){
-    if (i.timesOnPage > 0){
-      percent = Math.floor(i.votes/i.timesOnPage*100);
-    } else {
-      percent = 0;
-    }
-    listItem = document.createElement('li');
-    listItem.textContent = i.productName;
-    results.appendChild(listItem);
-    listItem = document.createElement('li');
-    listItem.textContent = i.votes+' votes, '+percent+'% pick rate';
-    results.appendChild(listItem);
+function getResults(){
+  for (var i of Product.products){
+    Product.allNames.push(i.productName);
+    Product.allTimesDisplayed.push(i.timesDisplayed);
+    Product.allVotes.push(i.votes);
   }
 }
 
 function displayResults() {
-  getResults(productsOnScreen);
-  getResults(allProducts);
+  Product.products = Product.products.concat(displayedProducts);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  getResults();
+  
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: Product.allNames,
+      datasets: [
+        {
+          label: '# of votes',
+          data: Product.allVotes,
+          backgroundColor: '#222'
+        },
+        {
+          label: '# times displayed',
+          data: Product.allTimesDisplayed,
+          backgroundColor: '#555'
+        }
+      ]
+    },
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: {
+          ticks: {
+            beginAtZero: true,
+            stepSize: 1
+          }
+        }
+      },
+      title: {
+        display: true,
+        text: 'Results'
+      }
+    }
+  });
 }
 
-function buttonEvent(i){
+function buttonEvent(e){
   voteCount++;
-  productsOnScreen[i].votes++;
+
+  for(var i of displayedProducts){
+    console.log(e.target.src);
+    console.log(i.img);
+    if(e.target.alt === i.productName) {
+      i.votes++;
+    }
+  }
   if (checkVoteOver(voteCount)){
     displayResults();
     return;
@@ -101,17 +152,8 @@ function buttonEvent(i){
   showNewProducts();
 }
 
-button1.addEventListener('click', function(){
-  buttonEvent(0);
-});
+images.addEventListener('click', buttonEvent);
 
-button2.addEventListener('click', function(){
-  buttonEvent(1);
-});
-
-button3.addEventListener('click', function(){
-  buttonEvent(2);
-});
+renderInstructions(ctx);
 
 showNewProducts();
-
