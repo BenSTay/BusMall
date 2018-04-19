@@ -5,16 +5,16 @@ var image2 = document.getElementById('productTwo');
 var image3 = document.getElementById('productThree');
 var images = document.getElementById('images');
 var canvas = document.getElementById('canvas');
-var ctx = canvas.getContext("2d");
+var ctx = canvas.getContext('2d');
 
 function renderInstructions(ctx){
-  ctx.font = "24px Cambria, Cochin, Georgia, Times, 'Times New Roman'"
-  ctx.fillStyle = "#000";
-  ctx.textAlign = "center";
-  ctx.fillText("Instructions:",canvas.width/2,canvas.height/2-48)
-  ctx.fillText("Pictures of three of our products will be displayed randomly on the screen.",canvas.width/2,canvas.height/2-16);
-  ctx.fillText("Click on the picture of your favorite product of the three to vote for it.",canvas.width/2,canvas.height/2+16);
-  ctx.fillText("After you have voted 25 times, the voting results will be shown here.",canvas.width/2,canvas.height/2+48);
+  ctx.font = '24px Cambria, Cochin, Georgia, Times, \'Times New Roman\'';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'center';
+  ctx.fillText('Instructions:',canvas.width/2,canvas.height/2-48);
+  ctx.fillText('Pictures of three of our products will be displayed randomly on the screen.',canvas.width/2,canvas.height/2-16);
+  ctx.fillText('Click on the picture of your favorite product of the three to vote for it.',canvas.width/2,canvas.height/2+16);
+  ctx.fillText('After you have voted 25 times, the voting results will be shown here.',canvas.width/2,canvas.height/2+48);
 }
 
 
@@ -30,27 +30,33 @@ function Product(productName,img) {
   this.timesDisplayed = 0;
   Product.products.push(this);
 }
+function getProductList(){
+  Product.products = JSON.parse(localStorage.getItem('products'));
+  if (!Product.products){
+    Product.products = [];
+    new Product('R2-D2 Bag','img/bag.jpg');
+    new Product('Banana Slicer','img/banana.jpg');
+    new Product('iPad TP Dispenser','img/bathroom.jpg');
+    new Product('Toeless Boots','img/boots.jpg');
+    new Product('Breakfast Maker','img/breakfast.jpg');
+    new Product('Meatball Bubblegum','img/bubblegum.jpg');
+    new Product('Convex Chair','img/chair.jpg');
+    new Product('Cthulhu Action Figure','img/cthulhu.jpg');
+    new Product('Duck Beak Dog Muzzle','img/dog-duck.jpg');
+    new Product('Dragon Meat','img/dragon.jpg');
+    new Product('Dinnerware Pen Lids','img/pen.jpg');
+    new Product('Pet Sweep','img/pet-sweep.jpg');
+    new Product('Pizza Scissors','img/scissors.jpg');
+    new Product('Shark Sleeping Bag','img/shark.jpg');
+    new Product('Baby Sweep Onesie','img/sweep.png');
+    new Product('Tauntaun Sleeping Bag','img/tauntaun.jpg');
+    new Product('Unicorn Meat','img/unicorn.jpg');
+    new Product('USB Tentacle','img/usb.gif');
+    new Product('Reverse Water Can','img/water-can.jpg');
+    new Product('Wine Glass','img/wine-glass.jpg');
+  }
+}
 
-new Product('R2-D2 Bag','img/bag.jpg'),
-new Product('Banana Slicer','img/banana.jpg'),
-new Product('iPad TP Dispenser','img/bathroom.jpg'),
-new Product('Toeless Boots','img/boots.jpg'),
-new Product('Breakfast Maker','img/breakfast.jpg'),
-new Product('Meatball Bubblegum','img/bubblegum.jpg'),
-new Product('Convex Chair','img/chair.jpg'),
-new Product('Cthulhu Action Figure','img/cthulhu.jpg'),
-new Product('Duck Beak Dog Muzzle','img/dog-duck.jpg'),
-new Product('Dragon Meat','img/dragon.jpg'),
-new Product('Dinnerware Pen Lids','img/pen.jpg'),
-new Product('Pet Sweep','img/pet-sweep.jpg'),
-new Product('Pizza Scissors','img/scissors.jpg'),
-new Product('Shark Sleeping Bag','img/shark.jpg'),
-new Product('Baby Sweep Onesie','img/sweep.png'),
-new Product('Tauntaun Sleeping Bag','img/tauntaun.jpg'),
-new Product('Unicorn Meat','img/unicorn.jpg'),
-new Product('USB Tentacle','img/usb.gif'),
-new Product('Reverse Water Can','img/water-can.jpg'),
-new Product('Wine Glass','img/wine-glass.jpg')
 
 var voteCount = 0;
 var displayedProducts = [];
@@ -97,11 +103,12 @@ function getResults(){
 
 function displayResults() {
   Product.products = Product.products.concat(displayedProducts);
+  localStorage.setItem('products',JSON.stringify(Product.products));
   ctx.clearRect(0,0,canvas.width,canvas.height);
   getResults();
-  
+
   new Chart(ctx, {
-    type: 'bar',
+    type: 'horizontalBar',
     data: {
       labels: Product.allNames,
       datasets: [
@@ -120,12 +127,11 @@ function displayResults() {
     options: {
       responsive: false,
       scales: {
-        yAxes: {
+        xAxes: [{
           ticks: {
-            beginAtZero: true,
-            stepSize: 1
+            beginAtZero: true
           }
-        }
+        }]
       },
       title: {
         display: true,
@@ -156,4 +162,5 @@ images.addEventListener('click', buttonEvent);
 
 renderInstructions(ctx);
 
+getProductList();
 showNewProducts();
